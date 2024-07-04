@@ -1,0 +1,38 @@
+{
+  "name": "shopifize",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "admin": "pnpm --filter admin dev",
+    "client": "pnpm --filter client dev",
+    "uidoc": "pnpm --filter uidoc dev",
+    "auth": "pnpm --filter auth start:dev",
+    "user": "pnpm --filter user start:dev",
+    "product": "pnpm --filter product start:dev",
+    "asset": "pnpm --filter asset start:dev",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "link-configs": "node ./link-configs.js",
+    "generate-env": "node ./generate-env.js",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "resolutions": {
+    "@types/react": "18.0.17",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "prettier": "latest",
+    "turbo": "latest",
+    "typescript": ">=3.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "packageManager": "pnpm@7.26.3"
+}

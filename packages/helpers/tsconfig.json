@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "declaration": true,
+    "paths": {
+      "types/*": ["./src/types/*"],
+      "functions/*": ["./src/functions"]
+    },
+    "experimentalDecorators": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
+}

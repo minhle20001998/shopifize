@@ -1,0 +1,171 @@
+import { IProductItemProps } from "~/components/ui/product-item";
+
+export const categories = [
+  {
+    title: "men clothes",
+    categories: [
+      "Jackets",
+      "Suits",
+      "Hoodies",
+      "Pants",
+      "Socks",
+      "Underwears",
+      "Others",
+    ],
+  },
+  {
+    title: "women clothes",
+    categories: [
+      "Jackets",
+      "Suits",
+      "Hoodies",
+      "Pants",
+      "Socks",
+      "Underwears",
+      "Others",
+    ],
+  },
+  {
+    title: "fashion accessories",
+    categories: [
+      "Rings",
+      "Earrings",
+      "Gloves",
+      "Bracelets",
+      "Necklaces",
+      "Hat",
+      "Belts",
+      "Others",
+    ],
+  },
+  {
+    title: "mobile gadgets",
+    categories: [
+      "Phones",
+      "Tablets",
+      "Powerbanks",
+      "Batteries",
+      "Screen Protectors",
+      "Cases",
+      "Memory Cards",
+      "Others",
+    ],
+  },
+  {
+    title: "computer & accessories",
+    categories: [
+      "PC",
+      "Laptop",
+      "Main",
+      "Cpu",
+      "Ram",
+      "VGA",
+      "SSD",
+      "HDD",
+      "PSU",
+      "Case",
+      "Monitor",
+      "Gaming gear",
+      "Fans",
+      "Others",
+    ],
+  },
+  {
+    title: "home & living",
+    categories: [
+      "Bedding",
+      "Furniture",
+      "Decorators",
+      "Regilious",
+      "Drinkware",
+      "Dinnerware",
+      "Home fragrance",
+      "Others",
+    ],
+  },
+
+  {
+    title: "health",
+    categories: [
+      "Medical supplies",
+      "Food supplement",
+      "Massage Devices",
+      "Others",
+    ],
+  },
+  {
+    title: "books",
+    categories: [
+      "Domestic",
+      "Foreign",
+      "Gift",
+      "Office supplies",
+      "Arts",
+      "Others",
+    ],
+  },
+  {
+    title: "toys",
+    categories: [
+      "Action figure",
+      "Educational",
+      "Toddler",
+      "Stuffed",
+      "Outdoor",
+      "Others",
+    ],
+  },
+  {
+    title: "grocery",
+    categories: [
+      "Snacks",
+      "Convenience",
+      "Ready-to-eat",
+      "Cooking essential",
+      "Bakery",
+      "Alcoholic",
+      "Others",
+    ],
+  },
+  {
+    title: "pets",
+    categories: [
+      "Food",
+      "Accessories",
+      "Litter",
+      "Clothing",
+      "Healthcare",
+      "Others",
+    ],
+  },
+];
+
+export const fakeProducts: IProductItemProps[] = [
+  {
+    id: 1,
+    img: "https://phukienpc.vn/wp-content/uploads/2018/06/dau-doc-the-sd-tf-usb-3-0-ugreen-40751-phukienpc-vn.jpg",
+    price: 30000,
+    sold: 12,
+    title: "Card reader USB",
+    votes: "3.5",
+    categories: ["computer & accessories"],
+  },
+  {
+    id: 2,
+    img: "https://cdn.tgdd.vn/Products/Images/55/69975/the-nho-microsd-64gb-class-10u1-1-600x600.png",
+    price: 69000,
+    sold: 12,
+    title: "64GB memory card",
+    votes: "4",
+    categories: ["computer & accessories"],
+  },
+  {
+    id: 4,
+    img: "https://bizweb.dktcdn.net/thumb/1024x1024/100/419/232/products/1-aecdc13c-24ed-4bb2-9ba3-9b187fc7380d.jpg?v=1657512398640",
+    price: 499000,
+    sold: 12,
+    title: "Bomber Signature",
+    votes: "4.2",
+    categories: ["men clothes"],
+  },
+];

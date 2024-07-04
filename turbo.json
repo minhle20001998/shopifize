@@ -1,0 +1,32 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [".env", "**/.env.*local"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**"],
+      "env": [
+        "GATEWAY_PORT",
+        "AUTH_PORT",
+        "NEXT_PUBLIC_AUTH_URL",
+        "NEXT_PUBLIC_USER_URL",
+        "CLIENT_PORT",
+        "POSTGRESQL_DB",
+        "POSTGRESQL_PASSWORD",
+        "POSTGRESQL_ROOT_USERNAME",
+        "POSTGRESQL_URL",
+        "NODE_ENV",
+        "RABBITMQ_ERLANG_COOKIE",
+        "RABBITMQ_DEFAULT_USER",
+        "RABBITMQ_DEFAULT_PASS",
+        "JWT_SECRET"
+      ]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false
+    }
+  }
+}

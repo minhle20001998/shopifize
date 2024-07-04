@@ -1,0 +1,38 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_ROOT_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${POSTGRESQL_DB}
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+  # client:
+  #   container_name: client
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/client/Dockerfile
+  #   ports:
+  #     - 3000:3000
+  # admin:
+  #   container_name: admin
+  #   build: 
+  #     context: .
+  #     dockerfile: ./apps/admin/Dockerfile

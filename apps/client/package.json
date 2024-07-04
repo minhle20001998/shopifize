@@ -1,0 +1,57 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm run open-browser && next dev",
+    "open-browser": "start http://localhost:3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@next/font": "13.1.1",
+    "@shopifize/helpers": "workspace:*",
+    "@shopifize/ui": "workspace:*",
+    "@tanstack/react-query": "^4.24.10",
+    "@types/node": "18.11.18",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@zoom-image/core": "^0.36.2",
+    "@zoom-image/react": "^0.4.19",
+    "axios": "^1.3.4",
+    "dayjs": "^1.11.8",
+    "easy-magnify": "^1.1.4",
+    "eslint": "8.31.0",
+    "eslint-config-next": "13.0.0",
+    "formik": "^2.2.9",
+    "lodash.chunk": "^4.2.0",
+    "next": "^13.4.7",
+    "notistack": "^2.0.8",
+    "qs": "^6.11.2",
+    "react": "^18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.7.1",
+    "react-slick": "^0.29.0",
+    "react-svg": "^16.1.34",
+    "sharp": "^0.33.2",
+    "slick-carousel": "^1.8.1",
+    "typescript": "4.9.4",
+    "use-deep-compare": "1.2.1",
+    "yup": "^1.0.0",
+    "yup-phone-lite": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/qs": "^6.9.10",
+    "@types/react-slick": "^0.23.10",
+    "@types/slick-carousel": "^1.6.37",
+    "eslint-plugin-unused-imports": "^2.0.0"
+  },
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false
+  }
+}
