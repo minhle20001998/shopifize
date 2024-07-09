@@ -41,6 +41,7 @@ import { CommentModule } from './comment/comment.module';
   ],
   controllers: [AppController],
   providers: [AppService],
+  exports: [AppService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

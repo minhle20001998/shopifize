@@ -28,11 +28,12 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       authPubSubInstance.unsubscribe(setIsFailRefreshToken);
     };
   }, []);
+
   const isAuthen = useDeepCompareMemo(() => {
     if (isFailRefreshToken === true) {
       return false;
     }
-    return !isNil(profile);
+    return !isNil(profile) || !isFailRefreshToken;
   }, [isFailRefreshToken, profile]);
 
   const isCheckingAuthen = profile === undefined;

@@ -31,7 +31,7 @@ export class CommentController {
   @Get()
   async getComments(
     @PaginationGetComments({
-      productId: true,
+      productVariantId: true,
       rating: true,
       userId: true,
     })

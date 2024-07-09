@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./User";
 import { Product } from "./Product";
+import { ProductVariant } from "./ProductVariant";
 
 @Entity()
 export class Comment {
@@ -13,8 +14,8 @@ export class Comment {
   @Column()
   rating: number
 
-  @ManyToOne(() => Product, product => product.comment)
-  product: Product
+  @ManyToOne(() => ProductVariant, productVariant => productVariant.comment)
+  product_variant: ProductVariant
 
   @ManyToOne(() => User, user => user.comment)
   user: User

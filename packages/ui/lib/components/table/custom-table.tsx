@@ -26,18 +26,20 @@ export interface ActionVariants<T> {
   variant: ActionVariant
   style?: ActionStyle
   href?: string | ((data: T) => string)
+  isDisable?: boolean | ((data: T) => boolean)
   callback?: (data: T) => void
 }
 
-export type TableId<T> = keyof T | 'actions'
+export type TableId = string | 'actions'
 
 export interface ColumnType<T> {
+  date?: boolean | {sx?: SxProps<Theme>}
   actions?: ActionVariants<T>[]
   custom?: (data?: T) => React.ReactNode
 }
 
 export interface Column<T> {
-  id: TableId<T>
+  id: TableId
   name: string
   sort?: boolean
   type?: ColumnType<T>

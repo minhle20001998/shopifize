@@ -63,7 +63,6 @@ export class CartService {
   }
 
   async removeItemFromCart(user: User, cartItemId: string) {
-    //
     const cartItem = await this.CartItemDatabase.findOne({
       where: {
         id: cartItemId,
@@ -89,6 +88,15 @@ export class CartService {
     }
 
     await this.CartItemDatabase.remove(cartItem);
+    return true;
+  }
+
+  async removeItemsFromCart(user: User, cartItemsId: string[]) {
+    const promises = cartItemsId.map((item) => {
+      return this.removeItemFromCart(user, item);
+    });
+
+    await Promise.all(promises);
     return true;
   }
 

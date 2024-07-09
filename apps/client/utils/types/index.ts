@@ -19,12 +19,12 @@ export type GetProductsType = {
 };
 
 export type GetCommentsType = {
-  productId: string;
+  productVariantId: string;
   rating?: string;
 };
 
 export type CreateCommentType = {
-  productId: string;
+  productVariantId: string;
   comment: string;
   rating: number;
 };

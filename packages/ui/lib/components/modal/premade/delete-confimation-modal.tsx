@@ -13,7 +13,7 @@ export const DeleteConfirmationModal = ({ children, title, open, handleDelete, h
     {...delegated}
     title={title}
     open={open}
-    onClose={close}
+    onClose={handleClose}
     actionsProps={{
       applyButtonProps: {
         content: "Delete",

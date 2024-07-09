@@ -1,25 +1,36 @@
 import {
   CustomAvatar,
   CustomButton,
+  CustomPagination,
   CustomTypography,
   MUI,
+  usePaginationQuery,
 } from "@shopifize/ui";
 import { ContentWrapper } from "~/components/ui";
 import { ProductDetailCommentInput } from "./product-detail-comment-input";
 import { useGetCommentsQuery } from "~/queries/products";
 import dayjs from "dayjs";
+import { useRef } from "react";
 
-export const ProductDetailComment = ({ id }: { id?: string }) => {
+export const ProductDetailComment = ({
+  id,
+  productVariantId,
+}: {
+  id?: string;
+  productVariantId?: string;
+}) => {
+  const { limit, skip } = usePaginationQuery();
   const { data, refetch } = useGetCommentsQuery(
     {
-      productId: id!,
-      limit: 10,
-      skip: 0,
+      productVariantId: productVariantId!,
+      limit: limit,
+      skip: skip,
     },
     {
-      enabled: !!id,
+      enabled: !!productVariantId,
     }
   );
+  const commentRef = useRef<HTMLDivElement | null>(null);
 
   const comments = data?.data.data;
 
@@ -41,7 +52,12 @@ export const ProductDetailComment = ({ id }: { id?: string }) => {
           marginBottom: "1rem",
         }}
       >
-        <MUI.Stack direction={"row"} gap={"1rem"} flexWrap={"wrap"}>
+        <MUI.Stack
+          direction={"row"}
+          gap={"1rem"}
+          flexWrap={"wrap"}
+          ref={commentRef}
+        >
           <CustomButton
             fullWidth={false}
             variant="outlined"
@@ -98,7 +114,11 @@ export const ProductDetailComment = ({ id }: { id?: string }) => {
           </CustomButton>
         </MUI.Stack>
       </ContentWrapper>
-      <ProductDetailCommentInput refetch={refetch} id={id} />
+      <ProductDetailCommentInput
+        refetch={refetch}
+        id={id}
+        productVariantId={productVariantId}
+      />
       <ContentWrapper>
         <MUI.Stack gap={"1rem"} marginTop={"1rem"}>
           {comments?.map((comment) => {
@@ -134,6 +154,26 @@ export const ProductDetailComment = ({ id }: { id?: string }) => {
               </>
             );
           })}
+        </MUI.Stack>
+        <MUI.Stack
+          direction={"row"}
+          justifyContent={"center"}
+          sx={{ paddingTop: "2rem" }}
+        >
+          {data?.data ? (
+            <CustomPagination
+              onPaginationChanging={() => {
+                commentRef.current?.scrollIntoView();
+              }}
+              pagination={{
+                limit: limit,
+                skip: skip,
+                total: data?.data.total || 0,
+              }}
+            />
+          ) : (
+            <></>
+          )}
         </MUI.Stack>
       </ContentWrapper>
     </ContentWrapper>

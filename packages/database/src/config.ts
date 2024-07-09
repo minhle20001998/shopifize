@@ -7,6 +7,7 @@ import { SubCategory } from "./entity/SubCategory";
 import { Order } from "./entity/Order";
 import { OrderItem } from "./entity/OrderItem";
 import { Payment } from "./entity/Payment";
+import { isThisBuilt } from "./is-this-build";
 
 dotenv.config({ path: path.join(__dirname, "../../../.env") });
 
@@ -14,8 +15,7 @@ const migrationPath = path.join(__dirname, "/migration");
 
 const migrationFiles = fs
   .readdirSync(migrationPath)
-  // .filter((file) => file.endsWith(isThisBuilt ? ".js" : ".ts"))
-  .filter((file) => file.endsWith(".ts"))
+  .filter((file) => file.endsWith(isThisBuilt ? ".js" : ".ts"))
   .map((file) => {
     return Object.values(require(path.join(migrationPath, file)))[0];
   });

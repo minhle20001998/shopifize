@@ -1,5 +1,5 @@
 import { Comment, Paginated, Product, ResponseType } from "@shopifize/helpers";
-import { UseQueryOptions } from "@tanstack/react-query";
+import { useQueryClient, UseQueryOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useShopifizedMutation } from "~/hooks/useShopifizedMutation";
 import { useShopifizedQuery } from "~/hooks/useShopifizedQuery";
@@ -63,13 +63,13 @@ export const useGetProductQuery = (
 };
 
 export const useGetCommentsQuery = (
-  { productId, rating, limit, skip }: GetCommentsType & PaginationType,
+  { productVariantId, rating, limit, skip }: GetCommentsType & PaginationType,
   options?: UseQueryOptions<ResponseType<Paginated<Comment[]>>, AxiosError>
 ) => {
   const results = useShopifizedQuery<ResponseType<Paginated<Comment[]>>>(
-    [GET_COMMENTS, productId, rating, limit, skip],
+    [GET_COMMENTS, productVariantId, rating, limit, skip],
     () => {
-      return getComments({ productId, rating, limit, skip });
+      return getComments({ productVariantId, rating, limit, skip });
     },
     options
   );
@@ -85,4 +85,18 @@ export const useCreateCommentMutation = (
   }, options);
 
   return result;
+};
+
+export const useInvalidateGetProduct = () => {
+  const queryClient = useQueryClient();
+
+  const invalidateGetProduct = async (id: string) => {
+    await queryClient.invalidateQueries({
+      queryKey: [GET_PRODUCTS, id],
+    });
+  };
+
+  return {
+    invalidateGetProduct,
+  };
 };

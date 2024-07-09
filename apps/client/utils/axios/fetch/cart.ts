@@ -20,3 +20,26 @@ export const addToCart = async (input: CartItemType) => {
   }
   return data;
 };
+
+export const removeFromCart = async (id: string) => {
+  const { data } = await userClient.delete<ResponseType<null>>(`/cart/${id}`);
+
+  if (data.error) {
+    throw new AxiosError(data.error.message);
+  }
+
+  return data;
+};
+
+export const removeItemsFromCart = async (id: string[]) => {
+  const { data } = await userClient.put<ResponseType<null>>(
+    "/cart/items/delete",
+    { cartItemsId: id }
+  );
+
+  if (data.error) {
+    throw new AxiosError(data.error.message);
+  }
+
+  return data;
+};

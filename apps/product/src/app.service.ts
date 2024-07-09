@@ -475,4 +475,18 @@ export class AppService {
 
     return category;
   }
+
+  async addStarsToProductStatus(productVariantId: string, stars: number) {
+    const productStatus = await this.ProductStatusDatabase.findOne({
+      where: { productVariant: { id: productVariantId } },
+    });
+
+    const nextRating = productStatus.rating + 1;
+    const nextStars = Number(stars) + Number(productStatus.stars);
+
+    await this.ProductStatusDatabase.update(productStatus, {
+      stars: nextStars.toString(),
+      rating: nextRating,
+    });
+  }
 }

@@ -12,12 +12,13 @@ import {
   useAddToCartMutation,
   useGetAddressesQuery,
   useInvalidateCartItems,
+  useProfileQuery,
 } from "~/queries";
 import { CurrentProductVariantType } from "./product-detail-information";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDeepCompareEffect } from "use-deep-compare";
-import { isNil } from "@shopifize/helpers";
+import { isNil, safeNumber } from "@shopifize/helpers";
 import { CartItemType } from "~/utils";
 import { useSnackbar } from "notistack";
 
@@ -45,25 +46,27 @@ export const ProductDetailInformationOptions = ({
   const { mutate: addToCart } = useAddToCartMutation();
   const { invalidateCartItems } = useInvalidateCartItems();
   const addresses = data?.data;
+  const { profile } = useProfileQuery();
+  const defaultAddress = profile?.defaultAddress;
 
   const formik = useFormik({
     initialValues: {
-      variant:
-        currentProduct?.variants?.[Number(query.variant?.toString()) ?? 0]?.id,
-      shippingTo: "",
+      variant: currentProduct?.variants?.[safeNumber(query.variant, 0)]?.id,
+      shippingTo: defaultAddress ?? "",
       shippingType: "",
       quantity: 1,
     },
     onSubmit: (values) => {
-      if (query.id && values.variant) {
+      if (query.id && !isNil(values.variant)) {
         handleAddToCart({
           productId: query.id.toString(),
-          productVariantId: values.variant,
+          productVariantId: values.variant!,
           quantity: values.quantity,
         });
       }
     },
     validationSchema,
+    enableReinitialize: true,
   });
 
   const handleAddToCart = (values: CartItemType) => {
@@ -162,7 +165,7 @@ export const ProductDetailInformationOptions = ({
                 <CustomTypography>To</CustomTypography>
                 {addresses ? (
                   <CustomSelect
-                    value={formik.values.shippingTo}
+                    value={formik.values.shippingTo || defaultAddress}
                     placeholderOption={{ id: 0, label: "Choose address" }}
                     options={addresses.map((value) => {
                       return {

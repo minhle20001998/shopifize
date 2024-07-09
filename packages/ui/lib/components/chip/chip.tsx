@@ -1,7 +1,9 @@
 import { Chip, ChipProps } from "@mui/material";
 import { forwardRef } from "react";
 
-export const CustomChip = forwardRef<HTMLDivElement, ChipProps>((props, ref) => {
+export type CustomChipProps = ChipProps
+
+export const CustomChip = forwardRef<HTMLDivElement, CustomChipProps>((props, ref) => {
   return (
     <Chip
       ref={ref}

@@ -4,13 +4,16 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { CartService } from './cart.service';
 import {
   AddCartItemDto,
   JwtAuthGuard,
+  RemoveItemsDto,
   UserParam,
   UUIDDto,
 } from '@shopifize/custom-nestjs';
@@ -47,6 +50,16 @@ export class CartController {
   @UseGuards(JwtAuthGuard)
   async removeItemFromCart(@UserParam() user: User, @Param() { id }: UUIDDto) {
     await this.cartService.removeItemFromCart(user, id);
+    return generateResponse(null, true);
+  }
+
+  @Put('items/delete')
+  @UseGuards(JwtAuthGuard)
+  async removeItemsFromCart(
+    @UserParam() user: User,
+    @Body() { cartItemsId }: RemoveItemsDto,
+  ) {
+    await this.cartService.removeItemsFromCart(user, cartItemsId);
     return generateResponse(null, true);
   }
 }

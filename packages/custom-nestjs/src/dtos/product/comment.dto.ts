@@ -18,8 +18,8 @@ export class CreateCommentDTO {
   rating: number;
 
   @IsUUID()
-  @IsNotEmpty({ message: 'Product Id Is Required' })
-  productId: string;
+  @IsNotEmpty({ message: 'Product Variant Id Is Required' })
+  productVariantId: string;
 }
 
 export class UpdateCommentDTO {

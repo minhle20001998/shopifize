@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGenerate
 import { User } from "./User";
 import { OrderItem } from "./OrderItem";
 import { ORDER_STATUS } from "../helpers/enums";
+import { Payment } from "./Payment";
 
 @Entity()
 export class Order {
@@ -20,6 +21,9 @@ export class Order {
 
   @ManyToOne(() => User, (user) => user.order)
   user: User
+
+  @OneToMany(() => Payment, (payment) => payment.order)
+  payment: Payment[]
 
   @OneToMany(() => OrderItem, orderItem => orderItem.order)
   items: OrderItem[]

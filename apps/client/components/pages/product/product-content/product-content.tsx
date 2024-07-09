@@ -88,8 +88,7 @@ export const ProductContent = () => {
     >
       <ReactSVG
         style={{ marginRight: "100px" }}
-        width={"400px"}
-        src={"https://d2cbrs5b3atqbl.cloudfront.net/common/no_data.svg"}
+        src={`${process.env.NEXT_PUBLIC_ASSET_URL!}/common/no_data.svg`}
       />
       <CustomTypography
         fontSize={"header3"}

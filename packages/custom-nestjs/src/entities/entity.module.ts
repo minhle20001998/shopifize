@@ -15,6 +15,7 @@ import { cartProviders } from './cart.entity';
 import { cartItemProviders } from './cart-item.entity';
 import { orderProviders } from './order.entity';
 import { orderItemProviders } from './order-item.entity';
+import { paymentProviders } from './payment.entity';
 
 @Module({
   imports: [DatabaseModule],
@@ -34,6 +35,7 @@ import { orderItemProviders } from './order-item.entity';
     ...cartItemProviders,
     ...orderProviders,
     ...orderItemProviders,
+    ...paymentProviders,
   ],
   exports: [
     ...userProviders,
@@ -51,6 +53,7 @@ import { orderItemProviders } from './order-item.entity';
     ...cartItemProviders,
     ...orderProviders,
     ...orderItemProviders,
+    ...paymentProviders,
   ],
 })
 export class EntityModule {}

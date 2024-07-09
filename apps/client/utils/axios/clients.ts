@@ -28,3 +28,8 @@ export const commentClient = axios.create({
 export const productClient = axios.create({
   baseURL: "http://localhost:3033/v1",
 });
+
+export const orderClient = axios.create({
+  baseURL: "http://localhost:3032/v1/order",
+  withCredentials: true,
+});

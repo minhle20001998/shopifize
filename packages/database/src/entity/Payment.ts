@@ -24,7 +24,7 @@ export class Payment {
   })
   status: PAYMENT_STATUS;
 
-  @ManyToOne(() => Order)
+  @ManyToOne(() => Order, (order) => order.payment)
   order: Order;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })

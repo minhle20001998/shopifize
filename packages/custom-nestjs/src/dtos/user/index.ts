@@ -114,3 +114,10 @@ export class AddCartItemDto {
   @IsNotEmpty({ message: 'Quantity Is Required' })
   quantity: number;
 }
+
+export class RemoveItemsDto {
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsString({ each: true })
+  cartItemsId: string[];
+}

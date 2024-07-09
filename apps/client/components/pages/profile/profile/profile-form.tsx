@@ -2,7 +2,7 @@ import { forwardRef, useState } from "react";
 
 import useMobileScreen from "~/hooks/useMobileScreen";
 import * as Yup from "yup";
-import { GENDER, Profile, capitalize } from "@shopifize/helpers";
+import { Gender, Profile, capitalize } from "@shopifize/helpers";
 import { useFormik } from "formik";
 import "yup-phone-lite";
 import { useProfileQuery } from "queries";
@@ -28,8 +28,8 @@ const validationSchema = Yup.object().shape({
   phoneNumber: Yup.string()
     .phone("VN", "Please enter a valid phone number")
     .required("Phone number is required"),
-  gender: Yup.mixed<GENDER>()
-    .oneOf(Object.values(GENDER))
+  gender: Yup.mixed<Gender>()
+    .oneOf(Object.values(Gender))
     .required()
     .nullable(),
   dob: Yup.date(),
@@ -53,7 +53,7 @@ const ProfileForm = forwardRef<HTMLFormElement, unknown>((props, ref) => {
     username: profile?.username ?? "",
     fullName: profile?.fullName ?? "",
     phoneNumber: profile?.phoneNumber?.toString() ?? "",
-    gender: profile?.gender ? profile.gender : null,
+    gender: profile?.gender ? (profile.gender as unknown as Gender) : null,
     dob: profile?.dob ? new Date(profile.dob) : undefined,
   };
 
@@ -87,7 +87,7 @@ const ProfileForm = forwardRef<HTMLFormElement, unknown>((props, ref) => {
   };
 
   const handleSubmit = (values: ProfileValueType) => {
-    updateProfile.mutate(values as Profile, {
+    updateProfile.mutate(values as unknown as Profile, {
       onSuccess: () => {
         invalidateProfile();
         temporarilyDisableButton();

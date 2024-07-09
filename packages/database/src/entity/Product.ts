@@ -19,9 +19,6 @@ export class Product {
   @ManyToOne(() => Category)
   category: Category;
 
-  @OneToMany(() => Comment, (comment) => comment.product, {onDelete: 'CASCADE'})
-  comment: Comment;
-
   @ManyToMany(() => SubCategory)
   @JoinTable()
   subCategory: SubCategory[];

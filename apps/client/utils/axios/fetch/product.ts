@@ -42,10 +42,10 @@ export const getProduct = async (id: string) => {
 };
 
 export const getComments = async (query: GetCommentsType & PaginationType) => {
-  const { productId, ...queries } = query;
+  const { productVariantId, ...queries } = query;
   const queryString = QueryString.stringify(removeEmptyValues(queries));
   const { data } = await productClient.get<ResponseType<Paginated<Comment[]>>>(
-    `/public/comments/${productId}?${queryString}`
+    `/public/comments/${productVariantId}?${queryString}`
   );
 
   return data;

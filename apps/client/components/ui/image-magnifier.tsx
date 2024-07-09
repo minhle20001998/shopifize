@@ -20,6 +20,7 @@ const ImageMagnifier = ({ imgUrl }: ImageMagnifierProps) => {
     const zoomTarget = zoomTargetRef.current as HTMLDivElement;
     createZoomImageHover(imageContainer, {
       zoomImageSource: imgUrl,
+      disableScrollLock: true,
       customZoom: { width: 400, height: 500 },
       zoomLensClass: "image-lens",
       zoomTarget,

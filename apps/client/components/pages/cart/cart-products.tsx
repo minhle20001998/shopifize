@@ -3,19 +3,32 @@ import {
   Column,
   CustomTable,
   CustomTypography,
+  DeleteConfirmationModal,
   MUI,
+  useOpenState,
   useTheme,
 } from "@shopifize/ui";
 import Image from "next/image";
+import { useSnackbar } from "notistack";
+import { useState } from "react";
 import { ContentTitle, ContentWrapper } from "~/components/ui";
 import { useCartContext } from "~/contexts/CartContext";
-import { useGetCartItemsQuery } from "~/queries";
+import {
+  useGetCartItemsQuery,
+  useRemoveFromCartMutation,
+  useRemoveItemsFromCartMutation,
+} from "~/queries";
 import { formatCurrency } from "~/utils";
 
 export const CartProducts = () => {
   const theme = useTheme();
-  const { setSelectedCartItems } = useCartContext();
-  const { data } = useGetCartItemsQuery();
+  const { selectedCartItems, setSelectedCartItems } = useCartContext();
+  const { data, refetch } = useGetCartItemsQuery();
+  const { mutate: removeItem } = useRemoveFromCartMutation();
+  const { mutate: removeItems } = useRemoveItemsFromCartMutation();
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const { isOpen, open, close } = useOpenState();
+  const { enqueueSnackbar } = useSnackbar();
 
   const columns: Column<CartItem & Record<string, string>>[] = [
     {
@@ -108,7 +121,10 @@ export const CartProducts = () => {
             name: "Remove",
             variant: "delete",
             style: "icon",
-            callback: () => {},
+            callback: (data) => {
+              setDeleteId(data.id);
+              open();
+            },
           },
         ],
       },
@@ -116,26 +132,76 @@ export const CartProducts = () => {
   ];
 
   return (
-    <ContentWrapper>
-      <ContentTitle isLeftSide>
-        <CustomTypography
-          sx={{
-            fontSize: theme.customTypography.fontSizes.header4,
+    <>
+      <ContentWrapper>
+        <ContentTitle isLeftSide>
+          <CustomTypography
+            sx={{
+              fontSize: theme.customTypography.fontSizes.header4,
+            }}
+          >
+            Products
+          </CustomTypography>
+        </ContentTitle>
+        <CustomTable
+          enableRowSelection
+          onRowSelection={(data) => {
+            setSelectedCartItems(data);
           }}
-        >
-          Products
-        </CustomTypography>
-      </ContentTitle>
-      <CustomTable
-        enableRowSelection
-        onRowSelection={(data) => {
-          setSelectedCartItems(data);
+          data={
+            (data?.data.cart_item as (CartItem & Record<string, string>)[]) ||
+            []
+          }
+          columns={columns}
+        />
+      </ContentWrapper>
+      <DeleteConfirmationModal
+        handleClose={close}
+        open={isOpen}
+        title="Remove these items from cart ?"
+        handleDelete={() => {
+          if (
+            selectedCartItems.length > 0 &&
+            selectedCartItems.some((value) => value.id === deleteId)
+          ) {
+            removeItems(
+              selectedCartItems.map((item) => item.id),
+              {
+                onSuccess: async () => {
+                  await refetch();
+                  enqueueSnackbar("Remove items successfully", {
+                    variant: "success",
+                  });
+                  close();
+                },
+                onError: () => {
+                  enqueueSnackbar("Fail to remove items", {
+                    variant: "error",
+                  });
+                },
+              }
+            );
+
+            return;
+          }
+          if (deleteId) {
+            removeItem(deleteId, {
+              onSuccess: async () => {
+                await refetch();
+                enqueueSnackbar("Remove item successfully", {
+                  variant: "success",
+                });
+                close();
+              },
+              onError: () => {
+                enqueueSnackbar("Fail to remove item", {
+                  variant: "error",
+                });
+              },
+            });
+          }
         }}
-        data={
-          (data?.data.cart_item as (CartItem & Record<string, string>)[]) || []
-        }
-        columns={columns}
       />
-    </ContentWrapper>
+    </>
   );
 };

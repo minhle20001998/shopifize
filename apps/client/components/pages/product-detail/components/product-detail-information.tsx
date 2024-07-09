@@ -1,15 +1,17 @@
 import { isNil } from "@shopifize/helpers";
 import { CustomTypography, MUI, MUIIcon } from "@shopifize/ui";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { ContentWrapper } from "~/components/ui";
 import ImageMagnifier from "~/components/ui/image-magnifier";
 import { useGetProductQuery } from "~/queries/products";
 import { formatCurrency } from "~/utils";
 import { ProductDetailInformationOptions } from "./product-detail-information-options";
+import { useDeepCompareEffect } from "use-deep-compare";
 
 interface Props {
   id?: string;
+  setProductVariantId?: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export type CurrentProductVariantType = {
@@ -29,7 +31,10 @@ export type CurrentProductVariantType = {
     | undefined;
 };
 
-export const ProductDetailInformation = ({ id }: Props) => {
+export const ProductDetailInformation = ({
+  id,
+  setProductVariantId,
+}: Props) => {
   const router = useRouter();
   const query = router.query;
   const [index, setIndex] = useState(0);
@@ -55,9 +60,12 @@ export const ProductDetailInformation = ({ id }: Props) => {
 
   const product = data?.data;
 
+  useDeepCompareEffect(() => {
+    setProductVariantId?.(product?.productVariants?.[index].id);
+  }, [product, index]);
+
   const currentProductVariant = useMemo<CurrentProductVariantType>(() => {
     const productVariant = product?.productVariants?.[index];
-
     return {
       productName: product?.name,
       price: productVariant?.price,
@@ -75,6 +83,11 @@ export const ProductDetailInformation = ({ id }: Props) => {
       }),
     };
   }, [index, product]);
+
+  //TODO Move this to helpers lib
+  function roundHalf(num: number) {
+    return Math.round(num * 2) / 2;
+  }
 
   return (
     <>
@@ -123,9 +136,19 @@ export const ProductDetailInformation = ({ id }: Props) => {
                       color: (theme) => theme.customPalette.secondaryText,
                     }}
                   >
-                    {currentProductVariant?.stars}
+                    {roundHalf(
+                      Number(currentProductVariant?.stars) /
+                        Number(currentProductVariant?.rating)
+                    )}
                   </CustomTypography>
-                  <MUI.Rating size="small" />
+                  <MUI.Rating
+                    size="small"
+                    precision={0.5}
+                    value={roundHalf(
+                      Number(currentProductVariant?.stars) /
+                        Number(currentProductVariant?.rating)
+                    )}
+                  />
                 </MUI.Stack>
                 <MUI.Divider orientation="vertical" flexItem />
                 <MUI.Box>

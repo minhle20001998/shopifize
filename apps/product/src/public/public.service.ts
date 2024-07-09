@@ -164,43 +164,29 @@ export class PublicService {
   }
 
   async getProductById(id: string) {
-    const productById = await this.redis.get(`${RedisKey.PRODUCT_BY_ID}-${id}`);
-    if (productById) {
-      return JSON.parse(productById);
-    } else {
-      const productByIdInDb = await this.ProductDatabase.findOne({
-        where: { id: id },
-        relations: {
-          category: true,
-          subCategory: true,
-          productVariants: {
-            productStatus: true,
-          },
+    const productByIdInDb = await this.ProductDatabase.findOne({
+      where: { id: id },
+      relations: {
+        category: true,
+        subCategory: true,
+        productVariants: {
+          productStatus: true,
         },
-      });
+      },
+    });
 
-      if (productByIdInDb) {
-        await this.redis.set(
-          `${RedisKey.PRODUCT_BY_ID}-${id}`,
-          JSON.stringify(productByIdInDb),
-          'EX',
-          3600,
-        );
-      }
-
-      return productByIdInDb;
-    }
+    return productByIdInDb;
   }
 
-  async getCommentByProductId(
-    productId: string,
+  async getCommentByProductVariantId(
+    productVariantId: string,
     pagination: PaginationDto<Pick<CommentPagination, 'rating'>>,
   ) {
     try {
       const [comments, count] = await this.CommentDatabase.findAndCount({
         where: {
-          product: {
-            id: productId,
+          product_variant: {
+            id: productVariantId,
           },
           rating: pagination.search.rating,
         },

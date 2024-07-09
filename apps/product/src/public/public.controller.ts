@@ -77,7 +77,7 @@ export class PublicController {
     })
     pagination: PaginationDto<Pick<CommentPagination, 'rating'>>,
   ) {
-    const comments = await this.publicService.getCommentByProductId(
+    const comments = await this.publicService.getCommentByProductVariantId(
       id,
       pagination,
     );

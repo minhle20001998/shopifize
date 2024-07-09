@@ -1,14 +1,15 @@
 import { Stack } from "@mui/material"
 import { ActionVariant, ColumnType, CustomButton, CustomTypography, TableId } from ".."
 import { MUIIcon } from "../../icon"
+import dayjs from "dayjs"
 
 interface RenderProps<T> {
-  data: T, _: TableId<T>, value: unknown, renderType?: ColumnType<T>
+  data: T, _: TableId, value: unknown, renderType?: ColumnType<T>
 }
 
 export const useTableCellRender = <T,>() => {
 
-  const renderCell = (data: T, _: TableId<T>, value: unknown, renderType?: ColumnType<T>) => {
+  const renderCell = (data: T, _: TableId, value: unknown, renderType?: ColumnType<T>) => {
     const props = {
       data, _, value, renderType
     }
@@ -20,6 +21,8 @@ export const useTableCellRender = <T,>() => {
     }
     else if (renderType.actions) {
       return renderActions(props)
+    } else if (renderType.date) {
+      return renderDate(props)
     }
     return <CustomTypography sx={{ wordBreak: 'break-word' }}>{value as string}</CustomTypography>
   }
@@ -37,7 +40,7 @@ export const useTableCellRender = <T,>() => {
       }
     }} gap={'1rem'} justifyContent={'flex-end'}>
       {listActions?.map((action) => {
-        const { href, style = 'text' } = action
+        const { href, style = 'text',isDisable } = action
         const hrefProps: { href?: string } = {}
         if (href) {
           if (typeof href === 'string') {
@@ -46,8 +49,12 @@ export const useTableCellRender = <T,>() => {
             hrefProps.href = href(props.data)
           }
         }
+
+        const disabled = typeof isDisable  === 'boolean' ? isDisable : isDisable?.(props.data)
+
         return <CustomButton
           {...hrefProps}
+          disabled={disabled}
           key={action.name}
           sx={{ width: 'fit-content' }}
           variant={ style === 'text' ? 'outlined' : 'text'}
@@ -58,6 +65,11 @@ export const useTableCellRender = <T,>() => {
         </CustomButton>
       })}
     </Stack>
+  }
+
+  const renderDate = (props: RenderProps<T>) => {
+    const style = typeof props.renderType?.date !== 'boolean' ? props.renderType?.date?.sx : undefined
+    return <CustomTypography sx={style}>{dayjs(String(props.value)).format('MMM DD YYYY - HH:ss')}</CustomTypography>
   }
 
   return { renderCell }

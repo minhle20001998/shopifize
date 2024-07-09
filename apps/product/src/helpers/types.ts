@@ -13,7 +13,7 @@ export interface ProductPaginationSearch {
 }
 
 export interface CommentPagination {
-  productId?: string;
+  productVariantId?: string;
   userId?: string;
   rating?: number;
 }

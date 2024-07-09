@@ -18,10 +18,7 @@ export const menu: SidenavItem<ProfileRoutes>[] = [
     title: "My Purchase",
     isOpen: true,
     disabledInteraction: false,
-    items: [
-      { title: "Orders", to: ProfileRoutes.ORDERS },
-      { title: "History", to: ProfileRoutes.HISTORY },
-    ],
+    items: [{ title: "Orders", to: ProfileRoutes.ORDERS }],
   },
 ];
 

@@ -7,9 +7,8 @@ import Link from "next/link";
 
 export const Cart = () => {
   const theme = useTheme();
-  const { data } = useGetCartItemsQuery();
-
-  const itemCount = data?.data.cart_item.length ?? 0;
+  const { data, isError } = useGetCartItemsQuery();
+  const itemCount = isError ? 0 : data?.data.cart_item.length ?? 0;
   return (
     <Link href="/cart">
       <CustomIconButton

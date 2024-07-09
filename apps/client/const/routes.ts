@@ -5,5 +5,4 @@ export enum ProfileRoutes {
   CHANGE_EMAIL = "/profile/change-email",
   ACCOUNT_LOG = "/profile/account-log",
   ORDERS = "/profile/orders",
-  HISTORY = "/profile/history",
 }

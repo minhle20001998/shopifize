@@ -7,6 +7,7 @@ import {
 } from '@shopifize/custom-nestjs';
 import { Comment, Repository, User, UserRole } from '@shopifize/database';
 import { ShopifizedError } from '@shopifize/helpers';
+import { AppService } from 'src/app.service';
 import { CommentPagination } from 'src/helpers/types';
 
 @Injectable()
@@ -14,13 +15,14 @@ export class CommentService {
   constructor(
     @Inject(COMMENT_REPOSITORY)
     private CommentDatabase: Repository<Comment>,
+    private readonly appService: AppService,
   ) {}
 
   async getComments(pagination: PaginationDto<CommentPagination>) {
     const [comments, count] = await this.CommentDatabase.findAndCount({
       where: {
-        product: {
-          id: pagination.search.productId,
+        product_variant: {
+          id: pagination.search.productVariantId,
         },
         user: {
           id: pagination.search.userId,
@@ -42,8 +44,8 @@ export class CommentService {
   async createComment(comment: CreateCommentDTO & { userId: string }) {
     const commentInstance = this.CommentDatabase.create({
       ...comment,
-      product: {
-        id: comment.productId,
+      product_variant: {
+        id: comment.productVariantId,
       },
       user: {
         id: comment.userId,
@@ -51,6 +53,10 @@ export class CommentService {
     });
 
     await this.CommentDatabase.save(commentInstance);
+    await this.appService.addStarsToProductStatus(
+      comment.productVariantId,
+      comment.rating,
+    );
   }
 
   async updateComment(id: string, updateComment: UpdateCommentDTO) {

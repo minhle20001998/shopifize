@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "./Product";
 import { ProductStatus } from "./ProductStatus";
 import { ColumnNumericTransformer } from "../helpers";
+import { Comment } from "./Comment";
 
 @Entity()
 export class ProductVariant {
@@ -22,6 +23,9 @@ export class ProductVariant {
 
   @Column({ nullable: true, type: "decimal", transformer: new ColumnNumericTransformer() })
   salePrice: number | null;
+
+  @OneToMany(() => Comment, (comment) => comment.product_variant, {onDelete: 'CASCADE'})
+  comment: Comment;
 
   @ManyToOne(() => Product, (product) => product.productVariants)
   product: Product
